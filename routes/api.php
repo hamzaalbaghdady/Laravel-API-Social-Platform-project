@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
@@ -25,6 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('profiles', ProfileController::class);
     Route::apiResource('posts', PostController::class);
+    Route::apiResource('comments', CommentController::class);
 });
 
 Route::post('register', [AuthController::class, 'register']);

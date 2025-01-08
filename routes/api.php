@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [AuthController::class, 'logout']);
     Route::apiResource('profiles', ProfileController::class);
     Route::apiResource('posts', PostController::class);
-    Route::apiResource('comments', CommentController::class);
+    Route::apiResource('posts.comments', CommentController::class);
 });
 
 Route::post('register', [AuthController::class, 'register']);

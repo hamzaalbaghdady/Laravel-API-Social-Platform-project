@@ -27,6 +27,6 @@ class Profile extends Model
 
     public function posts(): HasMany
     {
-        return $this->hasMany(Post::class, 'creator_id');
+        return $this->hasMany(Post::class, 'profile_id');
     }
 }

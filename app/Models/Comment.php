@@ -17,6 +17,10 @@ class Comment extends Model
 
     public function creator(): BelongsTo
     {
-        return $this->belongsTo(User::class, 'id');
+        return $this->belongsTo(User::class, 'creator_id');
+    }
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class, 'post_id');
     }
 }

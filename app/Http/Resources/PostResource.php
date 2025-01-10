@@ -21,6 +21,8 @@ class PostResource extends JsonResource
             "profile_id" => $this->profile_id,
             "content" => $this->content,
             "image" => $this->image,
+            "comments_count" => $this->comments()->count(),
+            "reactions_count" => $this->reaction()->count(),
             "created_at" => $this->created_at,
             "updated_at" => $this->updated_at
         ];

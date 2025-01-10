@@ -24,7 +24,7 @@ class CommentController extends Controller
         $comment->save();
         return new CommentResource($comment);
     }
-    public function update(Request $request, Comment $comment)
+    public function update(Request $request, Post $post, Comment $comment)
     {
         $validated = $request->validate([
             'content' => 'required',

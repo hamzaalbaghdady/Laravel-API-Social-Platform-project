@@ -34,7 +34,9 @@ class ProfileController extends Controller
     public function destroy(Request $request, Profile $profile)
     {
         $profile->delete();
-        return response()->noContent();
+        return response()->json([
+            'message' => 'Profile deleted successfully!'
+        ]);
     }
     public function index(Request $request)
     {

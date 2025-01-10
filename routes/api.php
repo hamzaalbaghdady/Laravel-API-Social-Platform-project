@@ -28,16 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('profiles', ProfileController::class);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('posts.comments', CommentController::class);
-    Route::apiResource('posts.reactions', ReactionController::class)->only([
-        'store',
-        'update',
-        'delete',
-    ]);
-    Route::apiResource('comments.reactions', ReactionController::class)->only([
-        'store',
-        'update',
-        'delete',
-    ]);
+    Route::controller(ReactionController::class)->group(function () {
+        Route::post('posts/{post}/reactions', 'react');
+        Route::delete('posts/{post}/reactions/{reaction}', 'unreact');
+        Route::post('comments/{comment}/reactions', 'react');
+        Route::delete('comments/{comment}/reactions/{reaction}', 'unreact');
+    });
 });
 
 Route::post('register', [AuthController::class, 'register']);

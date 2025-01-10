@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class, 'creator_id');
     }
+
+    public function reactions(): HasMany
+    {
+        return $this->hasMany(Reaction::class, 'creator_id');
+    }
 }

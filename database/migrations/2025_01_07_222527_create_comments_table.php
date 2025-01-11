@@ -15,8 +15,8 @@ return new class extends Migration {
             $table->foreignId('creator_id')->constrained('users', 'id')->cascadeOnDelete();
             $table->foreignId('post_id')->constrained('posts', 'id')->cascadeOnDelete();
             $table->text('content');
-            $table->string('attachment');
-            $table->integer('reply_id')->nullable();
+            $table->string('attachment')->nullable();
+            $table->foreignId('parent_id')->nullable()->constrained('comments')->cascadeOnDelete();
             $table->timestamps();
         });
     }

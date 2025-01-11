@@ -14,6 +14,20 @@ class CommentCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'comments' => $this->collection->map(function ($comment) {
+                return [
+                    'id' => $comment->id,
+                    'content' => $comment->content,
+                    'creator_id' => $comment->creator_id,
+                    'post_id' => $comment->post_id,
+                    'parent_id' => $comment->parent_id,
+                    "reactions_count" => $comment->reaction()->count(),
+                    'created_at' => $comment->created_at,
+                    'updated_at' => $comment->updated_at,
+                ];
+            }),
+            'count' => $this->count()
+        ];
     }
 }

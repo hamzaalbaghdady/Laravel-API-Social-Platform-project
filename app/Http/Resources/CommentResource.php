@@ -26,6 +26,8 @@ class CommentResource extends JsonResource
             'updated_at' => $this->updated_at,
             'creator_id' => $this->creator_id,
             'post_id' => $this->post_id,
+            'parent_id' => $this->parent_id,
+            'replies' => $this->newCollection($this->replies),// to load nested replies
         ];
     }
 }

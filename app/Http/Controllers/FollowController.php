@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,7 @@ class FollowController extends Controller
             ], 403);
         }
 
-        $user_to_follow = User::findOrFail($request->id);
+        $user_to_follow = Profile::findOrFail($request->id)->owner;
 
         // Check if user tries to follow himself
         if ($user->id == $user_to_follow->id) {

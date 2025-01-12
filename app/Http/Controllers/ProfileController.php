@@ -13,6 +13,11 @@ use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Profile::class, 'profile');
+    }
+
     public function store(StoreProfileRequest $request)
     {
         $validated = $request->validated();

@@ -12,6 +12,10 @@ use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, 'comment');
+    }
     public function store(Request $request, Post $post)
     {
         $user = Auth::user();

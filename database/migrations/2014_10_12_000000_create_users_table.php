@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->date('date_of_birth');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

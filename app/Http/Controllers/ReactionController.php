@@ -26,6 +26,14 @@ class ReactionController extends Controller
         $validated = $request->validate([
             'type' => "required|string|in:like,love,haha,wow,care,sad,angry",
         ]);
+        $model_name = ($model->getMorphClass() === 'App\Models\Post') ? 'post' : 'comment';
+        // Check if the user has a profile
+        if (!Auth::user()->profile()->exists()) {
+            return response()->json([
+                'message' => "User must have a profile to react on this $model_name!"
+
+            ], 403);
+        }
 
         //Check if the user has already react
         $existingReaction = Reaction::where('creator_id', auth()->id())

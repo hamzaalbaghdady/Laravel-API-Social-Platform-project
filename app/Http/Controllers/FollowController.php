@@ -10,9 +10,24 @@ class FollowController extends Controller
 {
     public function follow(Request $request)
     {
+        $user = Auth::user();
+        // Check if the user has a profile
+        if (!$user->profile()->exists()) {
+            return response()->json([
+                'message' => 'User should have a profile to follow others!'
+            ], 403);
+        }
+
         $user_to_follow = User::findOrFail($request->id);
+
+        // Check if user tries to follow himself
+        if ($user->id == $user_to_follow->id) {
+            return response()->json([
+                'message' => 'You can not follow your self!'
+            ], 403);
+        }
         // syncWithoutDetaching() used to add new IDs but not remove already existing ones.
-        Auth::user()->following()->syncWithoutDetaching($user_to_follow);
+        $user->following()->syncWithoutDetaching($user_to_follow);
         return response()->json([
             'message' => 'You are following ' . $user_to_follow->first_name . ' now!'
         ]);

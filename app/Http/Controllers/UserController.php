@@ -12,6 +12,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class UserController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
     public function update(Request $request, User $user)
     {
         $validated = $request->validate([

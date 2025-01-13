@@ -16,7 +16,7 @@ class ProfileController extends Controller
     public function store(StoreProfileRequest $request)
     {
         $validated = $request->validated();
-        $profile = Auth::user()->profiles()->create($validated);
+        $profile = Auth::user()->profile()->create($validated);
         return response()->json([
             'message' => 'Profile created successfully!'
         ], 201);

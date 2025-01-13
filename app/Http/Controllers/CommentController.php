@@ -12,6 +12,10 @@ use App\Http\Resources\CommentResource;
 
 class CommentController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Comment::class, 'comment');
+    }
     public function store(Request $request, Post $post)
     {
         $user = Auth::user();
@@ -57,7 +61,7 @@ class CommentController extends Controller
         // retrive all comments for specified post
         $comment = QueryBuilder::for($post->comments())
             ->where('post_id', '=', $post->id)
-            ->allowedFilters(['reply_id'])
+            ->allowedFilters(['parent_id'])
             ->allowedSorts(['content', 'created_at', 'updated_at'])
             ->defaultSort('-updated_at')
             ->paginate();

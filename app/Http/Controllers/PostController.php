@@ -11,6 +11,10 @@ use Spatie\QueryBuilder\QueryBuilder;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post');
+    }
     public function store(Request $request)
     {
         // Validate the request

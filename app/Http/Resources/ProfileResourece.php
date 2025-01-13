@@ -14,6 +14,19 @@ class ProfileResourece extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'user_id' => $this->user_id,
+            'user_name' => $this->user_name,
+            'about' => $this->about,
+            'phone_number' => $this->phone_number,
+            'profile_image' => $this->profile_image,
+            'location' => $this->location,
+            'education' => $this->education,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'follwers' => $this->owner->followers->count(),
+            'following' => $this->owner->following->count(),
+        ];
     }
 }

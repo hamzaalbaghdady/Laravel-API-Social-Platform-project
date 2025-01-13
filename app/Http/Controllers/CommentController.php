@@ -14,13 +14,20 @@ class CommentController extends Controller
 {
     public function store(Request $request, Post $post)
     {
+        $user = Auth::user();
+        // Check if the user has a profile
+        if (!$user->profile()->exists()) {
+            return response()->json([
+                'message' => 'User must have a profile to make comments!'
+            ], 403);
+        }
         $validated = $request->validate([
             'content' => 'required',
             'attachment' => 'nullable',
             'parent_id' => 'nullable|integer|exists:comments,id',
         ]);
         $comment = $post->comments()->make($validated);
-        $comment->creator()->associate(Auth::user());
+        $comment->creator()->associate($user);
         $comment->save();
         return new CommentResource($comment);
     }

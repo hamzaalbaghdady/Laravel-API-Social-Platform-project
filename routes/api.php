@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReactionController;
@@ -34,6 +35,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('comments/{comment}/reactions', 'react');
         Route::delete('comments/{comment}/reactions/{reaction}', 'unreact');
     });
+    Route::Post('follow/{id}', [FollowController::class, 'follow']);
+    Route::delete('unfollow/{id}', [FollowController::class, 'unfollow']);
 });
 
 Route::post('register', [AuthController::class, 'register']);

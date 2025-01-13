@@ -1,3 +1,484 @@
+# Laravel API Documentation for Social Media Application
+
+## Overview
+
+This API is the backend for a social media application inspired by platforms like Instagram and Facebook. It supports the following features:
+
+-   User registration, login, and logout.
+-   Profile creation, update, deletion, and retrieval.
+-   Post creation, update, deletion, and retrieval.
+-   Comment creation, update, deletion, retrieval, and reply.
+-   Reactions (likes, loves, etc.) on posts and comments.
+-   Follower system for users.
+
+---
+
+## Authentication and Authorization
+
+The application uses **Bearer Tokens** for authentication. All features require authenticated users except for registration and login.
+
+**Key Rules**:
+
+-   Authenticated users must have a profile to create posts, comments, react, or follow others.
+-   Authenticated users without a profile can view posts, comments, reactions, and follows but cannot create or interact.
+-   Users can only modify or delete their own resources (users, profiles, posts, comments, etc.).
+-   Post creators can delete any comment on their posts.
+
+---
+
+## Endpoints
+
+### 1. **User Endpoints**
+
+#### Register a User
+
+**POST** `/api/register`  
+**Request Body**:
+
+```json
+{
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "password": "string",
+    "password_confirmation": "string",
+    "date_of_birth": "date"
+}
+```
+
+**Response**:
+
+-   **201**: Success
+-   **422**: Validation error
+
+```json
+{
+    "id": "integer",
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "date_of_birth": "date",
+    "profile_id": "integer"
+}
+```
+
+#### Login a User
+
+**POST** `/api/login`  
+**Request Body**:
+
+```json
+{
+    "email": "string",
+    "password": "string"
+}
+```
+
+**Response**:
+
+-   **200**: Success
+-   **422**: Validation error
+-   **401**: Unauthorized
+
+```json
+{
+    "id": "integer",
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "date_of_birth": "date",
+    "profile_id": "integer",
+    "access_token": "string",
+    "token_type": "string"
+}
+```
+
+#### Logout a User
+
+**POST** `/api/logout`  
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+
+```json
+{
+    "message": "string"
+}
+```
+
+#### Get User Information
+
+**GET** `/api/user/{id}`  
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+-   **404**: Not found
+
+```json
+{
+    "id": "integer",
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "date_of_birth": "date",
+    "profile_id": "integer"
+}
+```
+
+#### Update User Information
+
+**PUT** `/api/user/{id}`  
+**Request Body**:
+
+```json
+{
+    "first_name": "string",
+    "last_name": "string",
+    "email": "string",
+    "password": "string",
+    "old_password": "string",
+    "date_of_birth": "date"
+}
+```
+
+**Response**:
+
+-   **200**: Success
+-   **422**: Validation error
+-   **401**: Unauthorized
+-   **403**: Forbidden
+-   **404**: Not found
+
+```json
+{
+    "message": "string"
+}
+```
+
+#### Delete User
+
+**DELETE** `/api/user/{id}`  
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+-   **403**: Forbidden
+-   **404**: Not found
+
+```json
+{
+    "message": "string"
+}
+```
+
+---
+
+### 2. **Profile Endpoints**
+
+#### Create a Profile
+
+**POST** `/api/profiles`  
+**Request Body**:
+
+```json
+{
+    "user_name": "string",
+    "about": "text",
+    "phone_number": "string",
+    "profile_image": "string",
+    "location": "string",
+    "education": "string"
+}
+```
+
+**Response**:
+
+-   **201**: Success
+-   **422**: Validation error
+-   **401**: Unauthorized
+
+```json
+{
+    "message": "string"
+}
+```
+
+#### Update a Profile
+
+**PUT** `/api/profiles/{id}`  
+**Request Body**:
+
+```json
+{
+    "user_name": "string",
+    "about": "text",
+    "phone_number": "string",
+    "profile_image": "string",
+    "location": "string",
+    "education": "string"
+}
+```
+
+**Response**:
+
+-   **200**: Success
+-   **422**: Validation error
+-   **401**: Unauthorized
+-   **403**: Forbidden
+-   **404**: Not found
+
+```json
+{
+    "id": "integer",
+    "user_id": "integer",
+    "user_name": "string",
+    "about": "text",
+    "phone_number": "string",
+    "profile_image": "string",
+    "location": "string",
+    "education": "string",
+    "created_at": "datetime",
+    "updated_at": "datetime",
+    "followers": "integer",
+    "following": "integer"
+}
+```
+
+#### Delete a Profile
+
+**DELETE** `/api/profiles/{id}`  
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+-   **403**: Forbidden
+-   **404**: Not found
+
+```json
+{
+    "message": "string"
+}
+```
+
+#### Get Profile Information
+
+**GET** `/api/profiles/{id}`  
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+-   **404**: Not found
+
+```json
+{
+    "id": "integer",
+    "user_id": "integer",
+    "user_name": "string",
+    "about": "text",
+    "phone_number": "string",
+    "profile_image": "string",
+    "location": "string",
+    "education": "string",
+    "created_at": "datetime",
+    "updated_at": "datetime",
+    "followers": "integer",
+    "following": "integer"
+}
+```
+
+#### Get All Profiles
+
+**GET** `/api/profiles`  
+Supports filtering, sorting, and pagination.
+
+**Query Parameters**:
+
+-   `filter[location]=$value`
+-   `sort=['user_name', 'location', 'created_at', 'updated_at']`
+-   `page=$page_number`
+
+**Response**:
+
+-   **200**: Success
+-   **401**: Unauthorized
+
+```json
+[
+    {
+        "id": "integer",
+        "user_id": "integer",
+        "user_name": "string",
+        "about": "text",
+        "phone_number": "string",
+        "profile_image": "string",
+        "location": "string",
+        "education": "string",
+        "created_at": "datetime",
+        "updated_at": "datetime",
+        "followers": "integer",
+        "following": "integer"
+    }
+]
+```
+
+---
+
+### 3. **Post Endpoints**
+
+#### Create Post
+
+-   **POST** `/api/posts`
+-   **Request Body**:
+    ```json
+    {
+        "content": "string",
+        "image": "string"
+    }
+    ```
+-   **Response**:
+    -   **201 Created**: Post data.
+
+#### Update Post
+
+-   **PUT** `/api/posts/{id}`
+-   **Request Body**:
+    ```json
+    {
+        "content": "string",
+        "image": "string"
+    }
+    ```
+-   **Response**:
+    -   **200 OK**: Updated post data.
+
+#### Delete Post
+
+-   **DELETE** `/api/posts/{id}`
+-   **Response**:
+    -   **200 OK**: `{ "message": "Post deleted successfully." }`
+
+#### Show Post
+
+-   **GET** `/api/posts/{id}`
+-   **Response**:
+    -   **200 OK**: Post data.
+
+#### List Posts
+
+-   **GET** `/api/posts`
+    -   Supports filters (e.g., creator_id) and sorting.
+    -   Pagination is available.
+
+---
+
+### 4. **Comment Endpoints**
+
+#### Create Comment
+
+-   **POST** `/api/posts/comments`
+-   **Request Body**:
+    ```json
+    {
+        "content": "string",
+        "attachment": "string",
+        "parent_id": "integer"
+    }
+    ```
+-   **Response**:
+    -   **201 Created**: Comment data.
+
+#### Update Comment
+
+-   **PUT** `/api/posts/{post_id}/comments/{id}`
+-   **Request Body**:
+    ```json
+    {
+        "content": "string",
+        "attachment": "string"
+    }
+    ```
+-   **Response**:
+    -   **200 OK**: Updated comment data.
+
+#### Delete Comment
+
+-   **DELETE** `/api/posts/{post_id}/comments/{id}`
+-   **Response**:
+    -   **200 OK**: `{ "message": "Comment deleted successfully." }`
+
+#### Show Comment
+
+-   **GET** `/api/posts/{post_id}/comments/{id}`
+-   **Response**:
+    -   **200 OK**: Comment data.
+
+#### List Comments
+
+-   **GET** `/api/posts/comments`
+    -   Supports filters (e.g., parent_id) and sorting.
+    -   Pagination is available.
+
+---
+
+### 5. **Reaction Endpoints**
+
+#### React to Post
+
+-   **POST** `/api/posts/{id}/reactions`
+-   **Request Body**:
+    ```json
+    {
+        "type": "string" // like, love, haha, wow, etc.
+    }
+    ```
+-   **Response**:
+    -   **201 Created**: `{ "message": "Reaction added/updated successfully." }`
+
+#### Remove Reaction from Post
+
+-   **DELETE** `/api/posts/{id}/reactions/{reaction_id}`
+-   **Response**:
+    -   **200 OK**: `{ "message": "Reaction removed successfully." }`
+
+#### React to Comment
+
+-   **POST** `/api/comments/{id}/reactions`
+-   **Request Body**:
+
+### 6. **Follow Endpoints**
+
+#### Follow User
+
+-   **POST** `/api/users/{id}/follow`
+-   **Response**:
+    -   **201 Created**: `{ "message": "Followed user successfully." }`
+
+#### Unfollow User
+
+-   **DELETE** `/api/users/{id}/unfollow`
+-   **Response**:
+    -   **200 OK**: `{ "message": "Unfollowed user successfully." }`
+
+#### List Followers
+
+-   **GET** `/api/users/{id}/followers`
+-   **Response**:
+    -   **200 OK**: List of followers.
+
+#### List Following
+
+-   **GET** `/api/users/{id}/following`
+-   **Response**:
+    -   **200 OK**: List of users being followed.
+
+---
+
+---
+
+---
+
 # Laravel API Social Media Application:
 
 This project is a copy of sites like Instagram and Facebook, I do implement only the backend.
@@ -98,6 +579,7 @@ Authenticated user can follow/unfullow other users.
 -   Index:get::::::: Domain/api/profiles
 -   Index:get::::::: Domain/api/profiles?filter[location]=$value
 -   Index:get::::::: Domain/api/profiles?sort=['user_name', 'location', 'created_at', 'updated_at']
+-   Index:get::::::: Domain/api/profiles?page=$page_number
     -- Request Body: {}
     -- Response JSON: {\*{id, user_id, user_name, about, phone_number, profile_image, location, education,created_at, updated_at, followers, following}}
     -- Response status code: 200, 401
@@ -138,6 +620,7 @@ Authenticated user can follow/unfullow other users.
 -   Index:get::::::: Domain/api/posts
 -   Index:get::::::: Domain/api/posts?filter[creator_id]=$value
 -   Index:get::::::: Domain/api/posts?sort=['content', 'created_at', 'updated_at']
+-   Index:get::::::: Domain/api/posts?page=$page_number
     -- Request Body: {}
     -- Response JSON: {\*{id, creator_id, auther, profile_id, content, image, comments_count, reactions_count, created_at, updated_at}}
     -- Response status code: 201, 401
@@ -170,6 +653,7 @@ Authenticated user can follow/unfullow other users.
 -   Index:get::::::: Domain/api/posts/comments
 -   Index:get::::::: Domain/api/posts/comments?filter[parent_id]=$value
 -   Index:get::::::: Domain/api/posts/comments?sort=['content', 'created_at', 'updated_at']
+-   Index:get::::::: Domain/api/posts/comments?page=$page_number
     -- Request Body: {}
     -- Response JSON: {\*{id, creator_name, post_creator_name, post, content, reactions_count, created_at, updated_at, creator_id, post_id, parent_id}}
     -- Response status code: 200, 401, 404
@@ -211,11 +695,11 @@ Authenticated user can follow/unfullow other users.
 
 ### Follows:
 
--   Follow:post:::::::::: Domain/api/posts/{id}/follow/{id}
+-   Follow:post:::::::::: Domain/api/follow/{id}
     -- Request Body: {}
     -- Response JSON: {message}
     -- Response status code: 201, 401, 404
--   Unfollow:delete:::::: Domain/api/posts/{id}/unfollow/{id}
+-   Unfollow:delete:::::: Domain/api/unfollow/{id}
     -- Request Body: {}
     -- Response JSON: {message}
     -- Response status code: 200, 401, 404

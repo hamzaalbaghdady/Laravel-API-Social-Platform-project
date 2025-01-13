@@ -49,10 +49,15 @@ class User extends Authenticatable
 
     public function profile(): HasOne
     {
-        return $this->hasOne(Profile::class, 'user_id');
+        return $this->hasOne(Profile::class, 'id');
     }
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class, 'creator_id');
+    }
+
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class, 'creator_id');
     }
 }

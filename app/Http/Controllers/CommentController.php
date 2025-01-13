@@ -61,7 +61,7 @@ class CommentController extends Controller
         // retrive all comments for specified post
         $comment = QueryBuilder::for($post->comments())
             ->where('post_id', '=', $post->id)
-            ->allowedFilters(['reply_id'])
+            ->allowedFilters(['parent_id'])
             ->allowedSorts(['content', 'created_at', 'updated_at'])
             ->defaultSort('-updated_at')
             ->paginate();

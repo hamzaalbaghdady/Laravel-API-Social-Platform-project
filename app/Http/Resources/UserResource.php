@@ -20,7 +20,7 @@ class UserResource extends JsonResource
             'last_name' => $this->last_name,
             'email' => $this->email,
             'date_of_birth' => $this->date_of_birth,
-            "profile_id" => $this->profiles()->id ?? 'Not created yet',
+            "profile_id" => $this->profiles->id ?? 'Not created yet',
         ];
     }
 }

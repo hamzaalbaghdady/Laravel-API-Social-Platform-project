@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -27,6 +28,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('profiles', ProfileController::class);
     Route::apiResource('posts', PostController::class);
     Route::apiResource('posts.comments', CommentController::class);
+    Route::controller(ReactionController::class)->group(function () {
+        Route::post('posts/{post}/reactions', 'react');
+        Route::delete('posts/{post}/reactions/{reaction}', 'unreact');
+        Route::post('comments/{comment}/reactions', 'react');
+        Route::delete('comments/{comment}/reactions/{reaction}', 'unreact');
+    });
 });
 
 Route::post('register', [AuthController::class, 'register']);

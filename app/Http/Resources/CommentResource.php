@@ -20,6 +20,8 @@ class CommentResource extends JsonResource
             'creator_name' => $this->creator->profile->user_name,
             'post_creator_name' => $this->post->profile->user_name,
             'post' => $this->post->content,
+            'content' => $this->content,
+            "reactions_count" => $this->reaction()->count(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
             'creator_id' => $this->creator_id,

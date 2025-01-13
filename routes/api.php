@@ -6,6 +6,7 @@ use App\Http\Controllers\FollowController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReactionController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,12 @@ Route::middleware('auth:sanctum')->group(function () {
     });
     Route::Post('follow/{id}', [FollowController::class, 'follow']);
     Route::delete('unfollow/{id}', [FollowController::class, 'unfollow']);
+    Route::apiResource('users', UserController::class)->only([
+        'update',
+        'destroy',
+        'show',
+        'index',
+    ]);
 });
 
 Route::post('register', [AuthController::class, 'register']);

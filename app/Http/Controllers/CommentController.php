@@ -17,7 +17,7 @@ class CommentController extends Controller
         $validated = $request->validate([
             'content' => 'required',
             'attachment' => 'nullable',
-            'reply_id' => 'nullable',
+            'parent_id' => 'nullable|integer|exists:comments,id',
         ]);
         $comment = $post->comments()->make($validated);
         $comment->creator()->associate(Auth::user());
@@ -29,7 +29,7 @@ class CommentController extends Controller
         $validated = $request->validate([
             'content' => 'required',
             'attachment' => 'nullable',
-            'reply_id' => 'nullable',
+            'parent_id' => 'nullable|integer|exists:comments,id',
         ]);
         $comment->update($validated);
         return new CommentResource($comment);

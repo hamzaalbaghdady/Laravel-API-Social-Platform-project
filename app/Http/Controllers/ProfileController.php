@@ -2,21 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProfileRequest;
-use App\Http\Requests\UpdateProfileRequest;
-use App\Http\Resources\ProfileCollection;
-use App\Http\Resources\ProfileResourece;
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Spatie\QueryBuilder\QueryBuilder;
+use App\Http\Resources\ProfileResourece;
+use App\Http\Resources\ProfileCollection;
+use App\Http\Requests\StoreProfileRequest;
+use App\Http\Requests\UpdateProfileRequest;
 
 class ProfileController extends Controller
 {
     public function store(StoreProfileRequest $request)
     {
         $validated = $request->validated();
-        $profile = Profile::create($validated);
-        return response()->json();
+        $profile = Auth::user()->profiles()->create($validated);
+        return response()->json([
+            'message' => 'Profile created successfully!'
+        ], 201);
     }
     public function show(Request $request, Profile $profile)
     {

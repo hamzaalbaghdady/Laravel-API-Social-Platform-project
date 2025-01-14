@@ -38,7 +38,7 @@ class DestroyProfileTest extends TestCase
         $response->assertUnauthorized();
     }
 
-    public function test_authenticated_user_can_not_update_others_profile(): void
+    public function test_authenticated_user_can_not_delete_others_profile(): void
     {
         $profile = Profile::factory()->create();
         $user = User::factory()->create();

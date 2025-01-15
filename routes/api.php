@@ -37,8 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('comments/{comment}/reactions/{reaction}', 'unreact')
             ->name(name: 'comments.reactions.unreact');
     });
-    Route::Post('follow/{id}', [FollowController::class, 'follow']);
-    Route::delete('unfollow/{id}', [FollowController::class, 'unfollow']);
+    Route::Post('follow/{id}', [FollowController::class, 'follow'])->name('follow');
+    Route::delete('unfollow/{id}', [FollowController::class, 'unfollow'])->name('unfollow');
     Route::apiResource('users', UserController::class)->only([
         'update',
         'destroy',

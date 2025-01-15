@@ -31,10 +31,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('posts', PostController::class);
     Route::apiResource('posts.comments', CommentController::class);
     Route::controller(ReactionController::class)->group(function () {
-        Route::post('posts/{post}/reactions', 'react');
-        Route::delete('posts/{post}/reactions/{reaction}', 'unreact');
-        Route::post('comments/{comment}/reactions', 'react');
-        Route::delete('comments/{comment}/reactions/{reaction}', 'unreact');
+        Route::post('posts/{post}/reactions', 'react')->name('posts.reactions');
+        Route::delete('posts/{post}/reactions/{reaction}', 'unreact')->name('posts.reactions.unreact');
+        Route::post('comments/{comment}/reactions', 'react')->name(name: 'comments.reactions');
+        Route::delete('comments/{comment}/reactions/{reaction}', 'unreact')
+            ->name(name: 'comments.reactions.unreact');
     });
     Route::Post('follow/{id}', [FollowController::class, 'follow']);
     Route::delete('unfollow/{id}', [FollowController::class, 'unfollow']);

@@ -36,11 +36,11 @@ class UserController extends Controller
         }
         return response()->json([
             'message' => 'Failed: You must enter the correct password!'
-        ]);
+        ], 403);
     }
-    public function destroy(Request $request)
+    public function destroy(Request $request, User $user)
     {
-        Auth::user()->delete();
+        $user->delete();
         return response()->json([
             'message' => 'User deleted successfully'
         ]);

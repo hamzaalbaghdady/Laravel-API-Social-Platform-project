@@ -35,7 +35,7 @@ class FollowController extends Controller
     }
     public function unfollow(Request $request)
     {
-        $user_to_unfollow = User::findOrFail($request->id);
+        $user_to_unfollow = Profile::findOrFail($request->id)->owner;
         // syncWithoutDetaching() used to add new IDs but not remove already existing ones.
         Auth::user()->following()->detach($user_to_unfollow);
         return response()->json([

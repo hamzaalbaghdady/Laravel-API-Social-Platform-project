@@ -31,7 +31,6 @@ class ReactionController extends Controller
         if (!Auth::user()->profile()->exists()) {
             return response()->json([
                 'message' => "User must have a profile to react on this $model_name!"
-
             ], 403);
         }
 
@@ -45,6 +44,7 @@ class ReactionController extends Controller
             // Update if already reacted
             $model->reaction()->update($validated);
             $message = 'Reaction has updated successfully!';
+            $status = 200;
 
         } else {
             // create react if first time
@@ -52,11 +52,12 @@ class ReactionController extends Controller
             $reaction->creator()->associate(Auth::user());
             $reaction->save();
             $message = 'Reaction saved successfully!';
+            $status = 201;
         }
 
         return response()->json([
             'message' => $message,
-        ]);
+        ], $status);
     }
 
     public function unreact(Post|Comment $model, Reaction $reaction)
